@@ -5,6 +5,8 @@ public class RhythmGenerator{
   public int populationSize = 10000;
   public int iterations = 10000;
   int randomCounter = 1;
+  float minFitness = .99;
+  
   
   
   // Returns the rhythm to be played.
@@ -130,7 +132,7 @@ public class RhythmGenerator{
     if (this.verbose) {
       print("Solution: " + solution + " fitnes: " + solution.getFitness() + "\n");
     }
-    print("Solution: " + solution + " fitnes: " + solution.getFitness() + "\n");
+    print("Solution: " + solution + " fitnes: " + solution.getFitness() + "\n" + "number of iterations: " + count);
 
     return solution;
   }
@@ -146,7 +148,7 @@ public class RhythmGenerator{
   private boolean terminate (ArrayList<DNA> population, int count)
   {
     for (DNA d : population) {
-      if (d.getFitness() >.9) {
+      if (d.getFitness() > minFitness) {
         return true;
       }
     }

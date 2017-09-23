@@ -14,7 +14,7 @@ public  class Profile
   
   public float evaluateRhythm(Rhythm r)
   {
-    /*
+    
     int countTop = 0;
     boolean[][] rhythm = r.getRhythm();
     for (int i = 0; i < rhythm.length; i++)
@@ -22,8 +22,8 @@ public  class Profile
       countTop += (rhythm[i][0] ? 1 : 0) - (rhythm[i][1] ? 1 : 0);
     }
     return (float)countTop / rhythm.length;
-    */
-    return beatSimilarity(r);
+    
+    //return beatSimilarity(r);
   }
   
   private float beatSimilarity(Rhythm r)
