@@ -88,7 +88,7 @@ class TUNE
   //*********** REPLACE THIS METHOD BELOW WITH STUDENTS' FILL-IN HEURISTIC ***** 
   void myFillIn() 
     {
-      print("generating rhythm... Please be patient.");
+      print("generating rhythm... Please be patient." + "\n");
       byte[] r = new byte[8*8*3];
       for ( int i = 0; i < r.length; i++)
       {
