@@ -24,28 +24,34 @@ public  class Profile
     float sameAsStart = 0;
     for (int i = 0; i < 12; i++)
     {
-      sameAsStart = i / 13.0;
-      int[] sameInBlockCount = countSameInBlock(Arrays.copyOfRange(rhythm, i*16, (i+1)*16), i%4);
-      countSame+= sameAsStart * sameInBlockCount[0] / (16 * 5) + (1-sameAsStart)*sameInBlockCount[1]/ (16 * 5);
+      sameAsStart = 1 - (i / 11.0 * .5 + .25);
+      int[] instrumentWeights = {10, 5, 3, 5, 10};
+      int sum = 33;
+      
+      int[] sameInBlockCount = countSameInBlock(Arrays.copyOfRange(rhythm, i*16, (i+1)*16), i%4, instrumentWeights);
+      countSame+= sameAsStart * sameInBlockCount[0] / (16 * sum) + (1-sameAsStart)*sameInBlockCount[1]/ (16 * sum);
     }
 
     return (countSame) / 12.0;
   }
   
   // returns [sameAsStartCount, sameAsEndCount]
-  private int[] countSameInBlock(boolean[][] block, int blockNumber)
+  private int[] countSameInBlock(boolean[][] block, int blockNumber, int[] instrumentWeights)
   {
     int[] sameCount = {0, 0};
     for (int i = 0; i < block.length; i++)
     {
        for (int j = 0; j < 5; j++)
        {
-         sameCount[0] += start[i + blockNumber * 16][j] == block[i][j] ? 1 : 0;
-         sameCount[1] += end[i + blockNumber * 16][j] == block[i][j] ? 1 : 0;
+         sameCount[0] += start[i + blockNumber * 16][j] == block[i][j] ? instrumentWeights[j] : 0;
+         sameCount[1] += end[i + blockNumber * 16][j] == block[i][j] ? instrumentWeights[j] : 0;
        }
     }
     return sameCount;
   }
+  
+  //------------------------ TEST EVALUATION FUNCTIONS ----------------------------
+  //-------------------------------------------------------------------------------
   
   private float bottomFullAboveEmpty (Rhythm r)
   {

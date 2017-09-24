@@ -1,12 +1,13 @@
 public class RhythmGenerator{
 
-  private Random random = new Random(1);
+  private Random random = new Random(System.currentTimeMillis() % 1000);
   public boolean verbose = false; //print debugging info
-  public int populationSize = 100;
-  public int iterations = 8000;
+  public int populationSize = 50;
+  public int iterations = 10000;
+  public int numberOfCrossovers = 8*8*3/6; // length of rhythm divided by six
+  public boolean competeWithParentsOnly = false;
   int randomCounter = 1;
-  float minFitness = .99;
-  
+  float minFitness = .89;
   
   
   // Returns the rhythm to be played.
@@ -31,9 +32,6 @@ public class RhythmGenerator{
     // Make the solution, which is initially null
     DNA solution = null;    
     
-    // Set the population size
-    int populationSize = this.populationSize;
-    
     // Make the population array
     ArrayList<DNA> population = new ArrayList<DNA>();
     
@@ -45,7 +43,6 @@ public class RhythmGenerator{
       newIndividual.setFitness(this.evaluateFitness(newIndividual, profile));
       population.add(newIndividual);
     }
-    //print(population.size());
     if (this.verbose) {
       print("Initial population:\n");
       printPopulation(population);
@@ -80,7 +77,7 @@ public class RhythmGenerator{
       }
       
       // Do Crossovers
-      for (int i=0; i < this.numberOfCrossovers(); i++) {
+      for (int i=0; i < this.numberOfCrossovers; i++) {
         // Pick two parents
         DNA parent1 = this.pickIndividualForCrossover(newPopulation, null);
         DNA parent2 = this.pickIndividualForCrossover(newPopulation, parent1);
@@ -110,7 +107,7 @@ public class RhythmGenerator{
       
       // Cull the population
       // There is more than one way to do it.
-      if (this.competeWithParentsOnly()) {
+      if (this.competeWithParentsOnly) {
         population = this.competeWithParents(population, newPopulation, parents);
       }
       else {
@@ -168,14 +165,6 @@ public class RhythmGenerator{
     return selected;
   }
   
-  // Returns the number of times crossover should happen per iteration.
-  private int numberOfCrossovers ()
-  {
-    int num = 8*8*3/6; // Default is no crossovers
-    return num;
-
-  }
-  
   // Pick one of the members of the population that is not the same as excludeMe
   private DNA pickIndividualForCrossover (ArrayList<DNA> population, DNA excludeMe)
   {
@@ -187,14 +176,6 @@ public class RhythmGenerator{
     else {
       return picked;
     }
-  }
-  
-  // Returns true if children compete to replace parents.
-  // Retursn false if the the global population competes.
-  private boolean competeWithParentsOnly ()
-  {
-    boolean doit = false;
-    return doit;
   }
   
   // Determine if children are fitter than parents and keep the fitter ones.
@@ -239,7 +220,6 @@ public class RhythmGenerator{
     return best;
   }
   
-  // Changing this function is optional.
   private double evaluateFitness (DNA dna, Profile profile)
   {
     double fitness = 0.0;
@@ -253,7 +233,6 @@ public class RhythmGenerator{
     return dna;
   }
   
-  //for this to work, you must implement DNA.toString()
   private void printPopulation (ArrayList<DNA> population)
   {
     for (int i=0; i < population.size(); i++) {

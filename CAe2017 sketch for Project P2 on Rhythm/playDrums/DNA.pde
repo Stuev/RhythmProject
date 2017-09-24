@@ -17,7 +17,8 @@ public class DNA implements Comparable<DNA>
  
   public DNA(int randomSeed) {
     random = new Random(randomSeed);
-
+    
+    // All permutations of sounds in each timestep can be represented by a bitstring of length 5, or the numbers [0, 31]
     for (int i = 0; i < this.chromosome.length; i++){
       this.chromosome[i] = (byte) random.nextInt(32);
     }
@@ -54,7 +55,6 @@ public class DNA implements Comparable<DNA>
     this.length = n;
   }
   
-  // Get the level length
   public int getLength ()
   {
     return this.length;
@@ -84,15 +84,12 @@ public class DNA implements Comparable<DNA>
   }
 
   // Return a new DNA that differs from this one in a small way.
-  // Do not change this DNA by side effect; copy it, change the copy, and return the copy.
   public DNA mutate ()
   {
     DNA copy = new DNA(random.nextInt(9999999));
-    //YOUR CODE GOES BELOW HERE
     byte[] chrom = this.chromosome.clone();
     chrom[this.random.nextInt(chrom.length)] = (byte) random.nextInt(32);
     copy.setChromosome(chrom);
-    //YOUR CODE GOES ABOVE HERE
     return copy;
   }
 
@@ -100,11 +97,9 @@ public class DNA implements Comparable<DNA>
     return this.chromosome[index];
   }
 
-  // Do not change this DNA by side effect
   public ArrayList<DNA> crossover (DNA mate)
   {
     ArrayList<DNA> offspring = new ArrayList<DNA>();
-    //YOUR CODE GOES BELOW HERE
     DNA copy = new DNA(random.nextInt(9999999));
     byte[] chrom1 = this.chromosome.clone();
     byte[] chrom2 = this.chromosome.clone();
@@ -126,7 +121,6 @@ public class DNA implements Comparable<DNA>
     copy1.setChromosome(chrom1);
     offspring.add(copy);
     offspring.add(copy1);
-    //YOUR CODE GOES ABOVE HERE
     return offspring;
   }
   
