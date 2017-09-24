@@ -14,16 +14,19 @@ public  class Profile
   
   public float evaluateRhythm(Rhythm r)
   {
-    
-    int countTop = 0;
+    float countSame = 0;
     boolean[][] rhythm = r.getRhythm();
+    float sameAsStart = 0;
     for (int i = 0; i < rhythm.length; i++)
     {
-      countTop += (rhythm[i][0] ? 1 : 0) - (rhythm[i][1] ? 1 : 0);
+      sameAsStart = (i % 16 == 0) ? (i / 16.0) / 13.0 : sameAsStart;
+
+      for (int j = 0; j < 5; j++)
+      {
+        countSame += rhythm[i][j] == start[i%start.length][j] ? 1:0;
+      }
     }
-    return (float)countTop / rhythm.length;
-    
-    //return beatSimilarity(r);
+    return (countSame) / (5*rhythm.length);
   }
   
   private float beatSimilarity(Rhythm r)
@@ -35,16 +38,21 @@ public  class Profile
     
     float countSame = 0;
     boolean[][] rhythm = r.getRhythm();
-    boolean sameAsStart = true;
+    float sameAsStart = 0;
     for (int i = 0; i < rhythm.length; i++)
     {
-      sameAsStart = (i % 16 == 0) ? this.r.nextFloat() < (i / 16) / 13.0 : sameAsStart;
+      sameAsStart = (i % 16 == 0) ? (i / 16.0) / 13.0 : sameAsStart;
       //startBeatCount = 0;
       //endBeatCount = 0;
       //rhythmBeatCount = 0;
       for (int j = 0; j < 5; j++)
       {
-        countSame += (sameAsStart && rhythm[i][j] == start[i%start.length][j] || !sameAsStart && rhythm[i][j] == end[i%end.length][j] ? 1 : -1);
+        countSame += rhythm[i][j] == start[i%start.length][j] ? 1:0;
+        //countSame += (rhythm[i][j] == start[i%start.length][j] || rhythm[i][j] == end[i%end.length][j] ? 1 : -1);
+        //if (rhythm[i][j] == start[i%start.length][j] ^ rhythm[i][j] == end[i%end.length][j])
+        //{
+        //  countSame += rhythm[i][j] == start[i%start.length][j] ? 1:0;
+        //}
         //rhythmBeatCount += (rhythm[i][j] ? 1 : 0);
         //endBeatCount += (end[i%end.length][j]) ? 1 : 0;
         //startBeatCount += (start[i%start.length][j]) ? 1 : 0;
@@ -55,4 +63,32 @@ public  class Profile
     return (countSame) / (5*rhythm.length);
   }
   
+  private float sameAsFirstBeat(Rhythm r)
+  {
+    float countSame = 0;
+    boolean[][] rhythm = r.getRhythm();
+    float sameAsStart = 0;
+    for (int i = 0; i < rhythm.length; i++)
+    {
+      sameAsStart = (i % 16 == 0) ? (i / 16.0) / 13.0 : sameAsStart;
+
+      for (int j = 0; j < 5; j++)
+      {
+        countSame += rhythm[i][j] == start[i%start.length][j] ? 1:0;
+      }
+    }
+    return (countSame) / (5*rhythm.length); 
+  }
+  
+  private float bottomFullAboveEmpty (Rhythm r)
+  {
+    int countTop = 0;
+    boolean[][] rhythm = r.getRhythm();
+    
+    for (int i = 0; i < rhythm.length; i++)
+    {
+      countTop += (rhythm[i][0] ? 1 : 0) - (rhythm[i][1] ? 1 : 0);
+    }
+    return (float)countTop / rhythm.length; 
+  }
 }

@@ -2,8 +2,8 @@ public class RhythmGenerator{
 
   private Random random = new Random(1);
   public boolean verbose = false; //print debugging info
-  public int populationSize = 10000;
-  public int iterations = 10000;
+  public int populationSize = 4000;
+  public int iterations = 8000;
   int randomCounter = 1;
   float minFitness = .99;
   

@@ -12,7 +12,7 @@ AudioPlayer sound5;
 AudioPlayer testsound;
 int pnote=0, note=0;
 int tuneLength = 8;  // in seconds (one bar per second)
-int framesPerSecond=32; // =24; //
+int framesPerSecond=12; // =24; //
 
 int d=2; // number of frames between slots
 boolean playing=false, recording=false;
