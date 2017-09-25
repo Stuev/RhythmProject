@@ -21,30 +21,47 @@ public  class Profile
   { 
     float countSame = 0;
     boolean[][] rhythm = r.getRhythm();
-    float sameAsStart = 0;
+    float sameAsStart = 0; // this is the ration of beats in a given measure that should be the same as in the corresponding start measure
     for (int i = 0; i < 12; i++)
     {
-      sameAsStart = 1 - (i / 11.0 * .5 + .25);
-      int[] instrumentWeights = {10, 5, 3, 5, 10};
-      int sum = 33;
+      sameAsStart = 1 - (i / 11.0);
+      int[] instrumentWeights = {5, 4, 3, 4, 5};
+      float sum = 21.0;
       
-      int[] sameInBlockCount = countSameInBlock(Arrays.copyOfRange(rhythm, i*16, (i+1)*16), i%4, instrumentWeights);
-      countSame+= sameAsStart * sameInBlockCount[0] / (16 * sum) + (1-sameAsStart)*sameInBlockCount[1]/ (16 * sum);
+      // twins are pairs of measures [1, 3] [2, 4] in each row. These should be similar.
+      boolean[][] twin = null;
+      if (i % 4 == 0)
+      {
+        twin = Arrays.copyOfRange(rhythm, (i+2)*16, (i+3)*16);
+      } else if (i%4 ==1)
+      {
+        twin = Arrays.copyOfRange(rhythm, (i+2)*16, (i+3)*16);
+      } else if (i %4 ==2)
+      {
+        twin = Arrays.copyOfRange(rhythm, (i-2)*16, (i-1)*16);
+      } else
+      {
+        twin = Arrays.copyOfRange(rhythm, (i-2)*16, (i-1)*16);
+      }
+      
+      int[] sameInBlockCount = countSameInBlock(Arrays.copyOfRange(rhythm, i*16, (i+1)*16), twin, i%4, instrumentWeights);
+      countSame+= (sameAsStart * sameInBlockCount[0] / (16 * sum) + (1-sameAsStart)*sameInBlockCount[1]/ (16 * sum) + sameInBlockCount[2] / (64 * sum)) / 1.25;
     }
 
     return (countSame) / 12.0;
   }
   
-  // returns [sameAsStartCount, sameAsEndCount]
-  private int[] countSameInBlock(boolean[][] block, int blockNumber, int[] instrumentWeights)
+  // returns [sameAsStartCount, sameAsEndCount, sameAsTwin ([1,3] or [2,4])]
+  private int[] countSameInBlock(boolean[][] block, boolean[][] twin, int blockNumber, int[] instrumentWeights)
   {
-    int[] sameCount = {0, 0};
+    int[] sameCount = {0, 0, 0};
     for (int i = 0; i < block.length; i++)
     {
        for (int j = 0; j < 5; j++)
        {
          sameCount[0] += start[i + blockNumber * 16][j] == block[i][j] ? instrumentWeights[j] : 0;
          sameCount[1] += end[i + blockNumber * 16][j] == block[i][j] ? instrumentWeights[j] : 0;
+         sameCount[2] += twin[i][j] == block[i][j] ? instrumentWeights[j] : 0;
        }
     }
     return sameCount;

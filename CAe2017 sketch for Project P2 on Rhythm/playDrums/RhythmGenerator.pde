@@ -7,7 +7,7 @@ public class RhythmGenerator{
   public int numberOfCrossovers = 8*8*3/6; // length of rhythm divided by six
   public boolean competeWithParentsOnly = false;
   int randomCounter = 1;
-  float minFitness = .89;
+  float minFitness = .92;
   
   
   // Returns the rhythm to be played.

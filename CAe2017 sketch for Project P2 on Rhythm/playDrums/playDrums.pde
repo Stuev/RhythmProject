@@ -12,7 +12,7 @@ AudioPlayer sound5;
 AudioPlayer testsound;
 int pnote=0, note=0;
 int tuneLength = 8;  // in seconds (one bar per second)
-int framesPerSecond=12; // =24; //
+int framesPerSecond=20; // =24; //
 
 int d=2; // number of frames between slots
 boolean playing=false, recording=false;
@@ -45,9 +45,9 @@ void draw()
   if(snapPic) beginRecord(PDF, "data/PICTURES/P"+nf(pictureCounter++,3)+".pdf"); 
   fill(0); 
   scribeHeader("Rossignac's 2017 Computational Aesthetics course at Georgia Tech -- Project 1: Rhythm fill-in", 0);
-  scribeHeaderRight("Team: Jarek Rossignac & Jarek Rossignac");
-  image(author1, width-author1.width/2-20,25,author1.width/2,author1.height/2); // show pictures of the team members: file data/author1.jpg
-  image(author2, width-author1.width/2-20-author2.width/2-20,25,author2.width/2,author2.height/2); 
+  //scribeHeaderRight("Team: Jarek Rossignac & Jarek Rossignac");
+  //image(author1, width-author1.width/2-20,25,author1.width/2,author1.height/2); // show pictures of the team members: file data/author1.jpg
+  //image(author2, width-author1.width/2-20-author2.width/2-20,25,author2.width/2,author2.height/2); 
   T.showSheet();
   if(snapPic) {endRecord(); snapPic=false;}
   T.continueTune(); // if playing, continues
